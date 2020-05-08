@@ -1,3 +1,65 @@
 @startuml
+    Mechanic --|>Person  
+    PersonClient --|> Person
+    PersonClient --|> Client
+    CompanyClient --|> Client
+    Client "1" o-- "0..*" Order :order
+    Client "1" *-- "0..*" Car: car
+    Car o-- CarElement: element
+    CarElement o-- Part : parts
+    CarElement o-- CarElement: subelement
+    Repair "1" --> "1" CarElement : element
+    Repair "1" o-- Part : repaired_part
+    Order -- CarElement : element_to_repair
+    Order -- Car : car_to_repair
+    Order o-- Repair : repair
+    Invoice o-- Order: order
 
+    class Person{
+        -_name:  string 
+        -_sname: string
+        -_phone: string
+        -address:string
+
+        +name():string
+        +sname(): string
+        +phone():string
+        +address():string
+    }
+
+    class Mechanic{
+        -account : string
+        +diagnose(order: Order): Repair[]
+        +do_repair(repair: Repair)
+    }
+    class Client{
+        -taxid : string
+        +desc():string
+        +phone():string
+        +address():string
+
+    }
+
+    class PersonClient{
+
+    }
+
+    class CompanyClient{
+
+    }
+
+    class Car{}
+
+    class CarElement{}
+    
+    'Sate of part: broken, new, old 
+    class Part{}
+    class Order{}
+    class Repair{
+        - state
+    }
+
+    class Invoice{}
+
+    'hide members
 @enduml
