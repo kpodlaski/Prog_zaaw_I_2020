@@ -1,0 +1,27 @@
+@startuml
+
+(*) --> "Client arrives with Car" 
+--> "Employee -- Client survey"
+--> "Crate order"
+--> "Client left the car"
+--> "Mechanic Check the car" 
+if "is next order Element" as if_1 then 
+    --> [true] "Mechanic check element"
+    --> "Create list of parts"
+    --> "Mechanic comment order"
+    --> if_1
+else
+--> [false] "Mechanic Repair Car" 
+if "is next Element to repair" as if_2 then 
+    --> [true] "Mechanic gathers spare parts"
+    --> "Mechanic repair element"
+    --> "Mechanic add comment to order"
+    --> if_2
+else
+    --> "build invoice"
+    --> "Client pickup car"
+    -->(*)
+
+
+
+@enduml
