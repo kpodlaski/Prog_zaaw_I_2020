@@ -1,10 +1,13 @@
 @startuml
-    Mechanic --|>Person  
+    Mechanic --|>Employee
+    Employee --|>Person  
     PersonClient --|> Person
     PersonClient --|> Client
     CompanyClient --|> Client
     Client "1" o-- "0..*" Order :order
-    Client "1" *-- "0..*" Car: car
+    'two direction assotiation
+    Client "1" *-- "0..*" Car: car/owner
+
     Car o-- CarElement: element
     CarElement o-- Part : parts
     CarElement o-- CarElement: subelement
@@ -14,6 +17,17 @@
     Order -- Car : car_to_repair
     Order o-- Repair : repair
     Invoice o-- Order: order
+    System --> DataProvider : data_provider
+
+    note top of System
+        Patterns to use:
+            Decorator ...
+            Observer (Listener) 
+                on order, for Mechanic
+                on order, for System
+                on invoce, for Client
+            
+    end note
 
     class Person{
         -_name:  string 
@@ -27,11 +41,19 @@
         +address():string
     }
 
+    class Employee{
+        +survey_client(client:Client):Order
+    }
+
     class Mechanic{
         -account : string
-        +diagnose(order: Order): Repair[]
+        +diagnose(order: Order): Repair[] 
         +do_repair(repair: Repair)
     }
+    note right of Mechanic
+        diagnose -- Visitor Pattern
+        diagnose and do_repair -- Template Method
+    end note
     class Client{
         -taxid : string
         +desc():string
@@ -63,11 +85,13 @@
 
     class Invoice{}
 
-    class System {}
+    class System {
+        +left_car(car:Car): void
+    }
 
     'interface have only pure virtual methods
     interface DataProvider  <<Proxy>>{
-        
+
     }
     
 
