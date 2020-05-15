@@ -1,0 +1,38 @@
+@startuml
+
+actor Mechanic
+actor Employee
+actor Client 
+actor System <<Application>>
+entity Car
+
+
+usecase "Car Check" as check
+usecase "Element Check" as e_check
+usecase "Car repair" as repair 
+usecase "Element Repair" as e_repair
+usecase "Create Invoice" as invoice
+usecase "Bring car to the workshop" as start
+usecase "Pickup car" as end
+usecase "Send/Receive Invoice" as s_invoice
+
+Mechanic --|> Employee
+Car --> Client  : <<owns by>>
+Client -- start
+Car . start : <<arrives>>
+Client -- end 
+Car . end : <<departs>>
+Employee -- start
+Employee -- end
+System -- invoice
+invoice .> s_invoice : <<invoke>>
+Client -- s_invoice
+Mechanic -- repair
+Mechanic -- e_repair
+Mechanic -- check
+Mechanic -- e_check
+repair .> e_repair : <<include>>
+check .> e_check : <<include>>
+Car . repair : <<object of>>
+Car . check : <<object of>>
+@enduml
