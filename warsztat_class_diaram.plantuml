@@ -50,7 +50,9 @@
 
     class Car{}
 
-    class CarElement{}
+    class CarElement <<Composite>>{
+
+    }
     
     'Sate of part: broken, new, old 
     class Part{}
@@ -60,6 +62,14 @@
     }
 
     class Invoice{}
+
+    class System {}
+
+    'interface have only pure virtual methods
+    interface DataProvider  <<Proxy>>{
+        
+    }
+    
 
     'hide members
 @enduml
