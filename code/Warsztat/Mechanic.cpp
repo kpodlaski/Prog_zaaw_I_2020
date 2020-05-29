@@ -17,12 +17,12 @@ list<Repair*> Mechanic::diagnose(Order* order) {
 
 void Mechanic::diagnose(CarElement* cElement, list<Repair*> repairs) {
 	char a;
-	ui->showInfo(" SprawdŸ element samochodu: ");
+	ui->showInfo(" Sprawdz element samochodu: ");
 	ui->showInfo(cElement->desc());
 	list<Part*> parts;
 	for (std::list<Part>::iterator it = cElement->parts.begin(); it != cElement->parts.end(); ++it) {
 		Part part = *it;
-		a = ui->askForChar("Czêœæ : " + part.name + " Czy Naprawiæ ? T/N");
+		a = ui->askForChar("Czesc : " + part.name + " Czy Naprawic ? T/N");
 		if (a == 'T')
 		{
 			parts.push_back(&part);

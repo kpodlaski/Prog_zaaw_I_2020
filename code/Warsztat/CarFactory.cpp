@@ -9,11 +9,11 @@ CarElement CarFactory::createCarElement() {
 	
 	char a = 'N';
 	list<CarElement> elements;
-	string name = ui->askForString("Podaj nazwê elementu:");
-	a = ui->askForChar("Stworzyæ podelement ? T/N");
+	string name = ui->askForString("Podaj nazwe elementu:");
+	a = ui->askForChar("Stworzyc podelement ? T/N");
 	while (a == 't' || a == 'T') {
 		elements.push_back(createCarElement());
-		a = ui->askForChar("Stworzyæ podelement ? T/N");
+		a = ui->askForChar("Stworzyc podelement ? T/N");
 	}
 	list<Part> parts;
 	bool addNext = true;
@@ -56,7 +56,7 @@ Car* CarFactory::buildCar(Client* client) {
 	list<CarElement> elements;
 	while (a == 't' || a == 'T') {
 		elements.push_back(createCarElement());
-		a = ui->askForChar(" Stworzyæ nastêpny element ? T/N");
+		a = ui->askForChar(" Stworzyc nastepny element ? T/N");
 	}
 	Car* car = new Car(client, elements);
 	return car;

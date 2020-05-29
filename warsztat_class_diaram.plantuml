@@ -4,24 +4,30 @@
     PersonClient --|> Person
     PersonClient --|> Client
     CompanyClient --|> Client
-    Client "1" o-- "0..*" Order :order
+    System --|> InvoiceBuilder
+    Employee -- System: workshop
+    Employee -- UI: ui
+    Client "1" o-- "0..*" Order :orders
     'two direction assotiation
-    Client "1" *-- "0..*" Car: car/owner
+    Client "1" *-- "0..*" Car: cars/owner
 
     Car o-- CarElement: element
     CarElement o-- Part : parts
     CarElement o-- CarElement: subelement
     Repair "1" --> "1" CarElement : element
-    Repair "1" o-- Part : repaired_part
+    Repair "1" o-- Part : repaired_part, fault_parts
     Order -- CarElement : element_to_repair
     Order -- Car : car_to_repair
     Order o-- Repair : repair
     Invoice o-- Order: order
     System --> DataProvider : data_provider
+    System --> UI: ui
+    System --> CarFactory: carFactory
+    CarFactory --> UI: ui
+
 
     note top of System
         Patterns to use:
-            Decorator ...
             Observer (Listener) 
                 on order, for Mechanic
                 on order, for System
@@ -42,13 +48,16 @@
     }
 
     class Employee{
+        #account:string
         +survey_client(client:Client):Order
     }
 
     class Mechanic{
         -account : string
         +diagnose(order: Order): Repair[] 
+        +diagnose(carElement: CarElement, repair:Repair[]) 
         +do_repair(repair: Repair)
+        +observer_reister(ib:InvoiceBuilder)
     }
     note right of Mechanic
         diagnose -- Visitor Pattern
@@ -70,30 +79,80 @@
 
     }
 
-    class Car{}
+    class Car{
+        +start_diagnose(m:Mechanic, r:Repair[])
+    }
 
     class CarElement <<Composite>>{
-
+        -name:string
+        +start_diagnose(m:Mechanic, r:Repair[])
+        +desc():string
     }
     
     'Sate of part: broken, new, old 
-    class Part{}
-    class Order{}
+    class Part{
+        -name:string
+        -price:double
+    }
+    class Order{
+        +start_diagnose(m:Mechanic, r:Repair[])
+    }
     class Repair{
-        - state
+        - state:bool 
+        - comment:string
     }
 
     class Invoice{}
 
     class System {
         +left_car(car:Car): void
+        +new_personclient():Client
+        +new_companyclient():Client
+        +new_employee(data: string[]):Employee
+        +new_mechanic(data: string[]):Mechanic
+        +new_car(client:Client):Car
+        +survey_next_client(e:Employee)
+        +diagnose_next(m:Mechanic)
+	    +repair_next_car(m:Mechanic)
     }
 
     'interface have only pure virtual methods
     interface DataProvider  <<Proxy>>{
+        +addClient(c:Client)
+	    +addCar(c:Car)
+	    +addEmployee(e: Employee)
+	    +addMechanic(m:Mechanic)
+	    +addToDiagnose(o:Order)
+	    +addToRepair(o:Order)
+
+	    +getNextWaitingClient():Client
+	    +getNextToDiagnose():Order
+	    +getNextToRepair():Order
 
     }
     
+    RAMDataProvider --|> DataProvider
+
+    class CarFactory{
+        buildCar(c:Client):Car
+        buildCar(c:Client, data string[], data_size:int):Car
+    }
+
+    interface InvoiceBuilder{
+        +repairFinished(o:Order)
+    }
+
+    interface UI {
+        +showInfo(info:string)
+        +askForChar(info:string):char
+        +askForString(info:string):string 
+    }
+
+    ConsoleUI -up-|> UI
+    UIWithLogger -left-|> UI
+    note top of UIWithLogger
+        Decorator for UI
+    endnote
 
     'hide members
 @enduml
