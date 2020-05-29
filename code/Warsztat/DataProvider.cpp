@@ -30,6 +30,16 @@ void RAMDataProvider::addToRepair(Order * order)
 	waiting_to_repair.push_back(order);
 }
 
+void RAMDataProvider::moveToRepaired(Order* order)
+{
+	repaired.push_back(order);
+}
+
+Car* RAMDataProvider::getRepairedCarForClient(Client* client)
+{
+	return nullptr;
+}
+
 Client* RAMDataProvider::getNextWaitingClient()
 {
 	Client* c = waiting_clients.front();
@@ -49,4 +59,12 @@ Order* RAMDataProvider::getNextToRepair()
 	Order* o = waiting_to_repair.front();
 	if (o != 0) waiting_to_repair.pop_front();
 	return o;
+}
+
+void RAMDataProvider::destroy_car(Car* car)
+{
+	//Remove from all lists the car can still exist
+	//Remove car from client 
+	//Remove all orders and repairs
+	//Destroy pointer
 }

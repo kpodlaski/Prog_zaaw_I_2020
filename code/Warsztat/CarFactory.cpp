@@ -42,22 +42,24 @@ CarFactory::~CarFactory()
 Car* CarFactory::buildCar(Client* client, string* carElements, int cElements_size)
 {
 	list<CarElement> elements;
+	string car_id;
 	//build carElements from string
 	for (int i = 0; i < cElements_size; i++) {
 		//Create car element from string
 	}
-	//
-	Car* car = new Car(client, elements);
+	
+	Car* car = new Car(client, car_id, elements);
 	return car;
 }
 
 Car* CarFactory::buildCar(Client* client) {
 	char a = 'T';
 	list<CarElement> elements;
+	string car_id = ui->askForString("Podaj nr rej. samochodu: ");
 	while (a == 't' || a == 'T') {
 		elements.push_back(createCarElement());
 		a = ui->askForChar(" Stworzyc nastepny element ? T/N");
 	}
-	Car* car = new Car(client, elements);
+	Car* car = new Car(client, car_id, elements);
 	return car;
 }

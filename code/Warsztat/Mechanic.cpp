@@ -10,7 +10,6 @@ using namespace std;
 list<Repair*> Mechanic::diagnose(Order* order) {
 	list<Repair*> repairs;
 	order->start_diagnose(this, repairs);
-	
 	return repairs;
 
 }
@@ -41,6 +40,7 @@ void Mechanic::diagnose(CarElement* cElement, list<Repair*> repairs) {
 
 void Mechanic::do_repair(Order* order)
 {
+	//DO REPAIR
 	for (std::list< InvoiceBuilder*>::iterator it = this->invBulders.begin(); it != invBulders.end(); ++it) {
 		(*it)->repairFinished(order);
 	}
@@ -49,6 +49,7 @@ void Mechanic::do_repair(Order* order)
 
 void Mechanic::observer_register(InvoiceBuilder* iBuilder)
 {
+	invBulders.push_back(iBuilder);
 }
 
 Mechanic::Mechanic(string _name, string _sname, string _phone, string _address, string _account, System * _workshop, UI* _ui):

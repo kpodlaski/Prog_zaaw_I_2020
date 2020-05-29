@@ -36,7 +36,7 @@ public:
 	void survey_next_client(Employee* employee);
 	void diagnose_next(Mechanic* mechanic);
 	void repair_next_car(Mechanic* mechanic);
-	
+	void client_pickup_car(Client* client);
 
 
 private:

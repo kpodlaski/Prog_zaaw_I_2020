@@ -58,6 +58,26 @@ void System::diagnose_next(Mechanic* mechanic)
 void System::repair_next_car(Mechanic* mechanic)
 {
 	Order* order = data_provider->getNextToRepair();
+	mechanic->do_repair(order);
+	data_provider->moveToRepaired(order);
+}
+
+void System::client_pickup_car(Client* client)
+{
+	bool _continue;
+	do {
+		
+		Car* car = data_provider->getRepairedCarForClient(client);
+		_continue = (car == 0);
+		if (_continue) {
+			ui->showInfo("Klient " + client->desc() + " odbiera auto " + car->info());
+			data_provider->destroy_car(car);
+		}
+		else {
+			ui->showInfo("Nie ma samochodow dla klienta " + client->desc());
+		}
+	}
+	while (_continue);
 }
 
 Employee* System::new_employee(string name, string sname, string phone, string address, string account)

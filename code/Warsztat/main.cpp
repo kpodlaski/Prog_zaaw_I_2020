@@ -23,4 +23,5 @@ int main() {
 	workshop->diagnose_next(m);
 	//When diagnose finished do repairs
 	workshop->repair_next_car(m);
+	workshop->client_pickup_car(client);
 }
